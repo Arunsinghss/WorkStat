@@ -4,7 +4,7 @@ from employees import views
 from employees import viewsets as restapis
 
 router = routers.DefaultRouter()
-router.register(r'user', restapis.UserViewset)
+router.register(r'getemp', restapis.UserViewset)
 
 urlpatterns = [
     path('', include(router.urls)),

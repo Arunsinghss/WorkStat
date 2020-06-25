@@ -8,4 +8,4 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     import ipdb; ipdb.set_trace()
     Token.objects.create(user=instance) 
     if created:
-        Token.objects.create(user=instance) 
+        Token.objects.create(user=instance)
