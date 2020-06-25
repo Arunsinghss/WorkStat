@@ -1,5 +1,7 @@
 from django.apps import AppConfig
 
+class EmployeesAppConfig(AppConfig):
+    name = 'Employees'
 
-class UsersConfig(AppConfig):
-    name = 'users'
+    def ready(self):
+        import employees.signals
