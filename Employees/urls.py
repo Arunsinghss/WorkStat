@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
-from employees import views
-from employees import viewsets as restapis
+from Employees import views
+from Employees import viewsets as restapis
 
 router = routers.DefaultRouter()
 router.register(r'user', restapis.UserViewset)
