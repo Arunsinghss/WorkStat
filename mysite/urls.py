@@ -16,8 +16,10 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 from employee import urls as employeeurls
+from project import urls as projecturls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('employee/',include(employeeurls), name="employee"),
+    path('project/',include(projecturls), name="project"),
 ]
