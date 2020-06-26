@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
-    import ipdb; ipdb.set_trace()
+    print("hello")
     Token.objects.create(user=instance) 
     if created:
         Token.objects.create(user=instance)
