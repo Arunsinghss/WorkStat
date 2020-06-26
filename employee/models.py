@@ -19,7 +19,7 @@ class EmployeeDesignation(BaseModel):
 
 
 class Employee(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.ForeignKey(EmployeeDesignation, null=True, blank=True, on_delete=models.SET_NULL)
     emp_age = models.PositiveIntegerField(null=True, blank=True)
     emp_exp = models.PositiveIntegerField(null=True, blank=True)

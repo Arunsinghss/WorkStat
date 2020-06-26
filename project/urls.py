@@ -3,7 +3,7 @@ from rest_framework import routers
 from project import viewsets as restapis
 
 router = routers.DefaultRouter()
-router.register(r'getproject', restapis.ProjectViewset)
+router.register(r'getaddproject', restapis.ProjectViewset)
 
 urlpatterns = [
     path('', include(router.urls)),
