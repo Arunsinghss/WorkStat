@@ -21,7 +21,7 @@ class UserViewset(viewsets.ModelViewSet):
 
         user = authenticate(username=username, password=password)
         if user is not None:
-            user.groups.add(name='employee')
+            user.groups.add(Group.objects.get(name='employee'))
             user.save()
             login(request, user)
             token,_ = Token.objects.get_or_create(user=user)
