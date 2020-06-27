@@ -17,7 +17,7 @@ class ProjectViewset(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['created_by', 'assigned_to', 'assigned_by', 'name', 'id']
+    filterset_fields = ['created_by', 'assigned_to', 'assigned_by', 'name', 'is_completed']
 
     def create(self, request, *args, **kwargs):
         params = request.data if request.data else request.POST
