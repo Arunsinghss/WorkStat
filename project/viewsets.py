@@ -51,9 +51,9 @@ class ProjectViewset(viewsets.ModelViewSet):
 
     def update(self, request, pk=None, *args, **kwargs):
         try:
-            params = request.data.dict() if request.data else request.POST
+            params = request.data if request.data else request.POST
             kw = {}
-            assigned_to = json.loads(params.get('assigned_to','[]'))
+            assigned_to = params.get('assigned_to',[])
             project = Project.objects.filter(pk=pk)
             
             for key,val in params.items():
