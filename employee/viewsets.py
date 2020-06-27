@@ -21,11 +21,14 @@ class UserViewset(viewsets.ModelViewSet):
 
         user = authenticate(username=username, password=password)
         if user is not None:
+            user.groups.add(name='employee')
+            user.save()
             login(request, user)
             token,_ = Token.objects.get_or_create(user=user)
             empdata = EmployeeSerializer(user.employee).data
             userdata = UserSerializer(user).data
-            return JsonResponse({"message": "User Logged In Successfully...", "data":{'token': token.key, 'empdata':empdata, 'userdata':userdata}}, status=200)
+            data = {'token': token.key, 'empdata':empdata, 'userdata':userdata}
+            return JsonResponse({"message": "User Logged In Successfully...", "data":data}, status=200)
         return JsonResponse({"message": "Please Enter Valid Credentials..."}, status=400)
 
 
