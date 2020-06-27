@@ -17,7 +17,6 @@ class EmployeeDesignation(BaseModel):
     def __str__(self):
         return self.name
 
-
 class Employee(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.ForeignKey(EmployeeDesignation, null=True, blank=True, on_delete=models.SET_NULL)
@@ -26,3 +25,8 @@ class Employee(BaseModel):
     
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
+
+    @property
+    def get_full_name(self):
+        return self.user.first_name + ' ' + self.user.last_name
+

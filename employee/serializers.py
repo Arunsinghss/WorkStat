@@ -11,9 +11,15 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'username', 'email')
 
 
+class EmployeeDesignationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmployeeDesignation
+        fields = ('id','name','description')
+
 class EmployeeSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     assigned_projects = SerializerMethodField()
+    designation = EmployeeDesignationSerializer()
 
     class Meta:
         model = Employee
@@ -23,7 +29,4 @@ class EmployeeSerializer(serializers.ModelSerializer):
         return ProjectSerializer(Project.objects.filter(assigned_to__in=[obj]), many=True).data
 
 
-class EmployeeDesignationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmployeeDesignation
-        fields = "__all__"
+

@@ -40,7 +40,8 @@ class ProjectViewset(viewsets.ModelViewSet):
                 'name': kwargs.get('name'),
                 'description': kwargs.get('description'),
                 'start_date': datetime.strptime(kwargs.get('start_date'), '%d-%m-%Y'),
-                'end_date': datetime.strptime(kwargs.get('end_date'), '%d-%m-%Y')
+                'end_date': datetime.strptime(kwargs.get('end_date'), '%d-%m-%Y'),
+                'created_by':request.user
             }
             newobj = Project.objects.create(**kw)
             data = self.serializer_class(newobj).data
