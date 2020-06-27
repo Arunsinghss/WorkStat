@@ -143,11 +143,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 
-CORS_ALLOW_HEADERS = ['accept','accept-encoding','authorization','content-type','dnt','origin','user-agent','x-csrftoken','x-requested-with']
+CORS_ALLOW_HEADERS = ['accept', 'accept-encoding', 'authorization',
+                      'content-type', 'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with']
 
 CORS_ALLOW_METHODS = ('GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE',)
 CORS_EXPOSE_HEADERS = ('X-SessionID',)
-

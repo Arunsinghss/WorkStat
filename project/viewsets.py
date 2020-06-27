@@ -9,12 +9,15 @@ from rest_framework.response import Response
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime
 import json
+from django_filters.rest_framework import DjangoFilterBackend
 
 class ProjectViewset(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['created_by', 'assigned_to', 'assigned_by', 'name', 'id']
 
     def create(self, request, *args, **kwargs):
         params = request.data if request.data else request.POST
@@ -74,6 +77,7 @@ class ProjectViewset(viewsets.ModelViewSet):
             if assigned_to:
                 for x in assigned_to:
                     project.assigned_to.add(Employee.objects.get(id=x))
+                project.assigned_by = request.user.employee
                 project.save()
 
             return JsonResponse({"Message": 'Data Updated Successfully....', "data": ProjectSerializer(project).data}, status=200)
