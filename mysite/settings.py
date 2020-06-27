@@ -25,11 +25,7 @@ SECRET_KEY = 'it3jvp-8ks6o_&2r4)qn^n9hwr+isz#!eqk3!@$g4eq6xeo&$b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '*',
-    'db268065ab5c.ngrok.io',
-    'localhost'
-]
+ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = [

@@ -51,9 +51,9 @@ class ProjectViewset(viewsets.ModelViewSet):
 
     def update(self, request, pk=None, *args, **kwargs):
         try:
-            params = request.data.dict() if request.data else request.POST
+            params = request.data if request.data else request.POST
             kw = {}
-            assigned_to = json.loads(params.get('assigned_to','[]'))
+            assigned_to = params.get('assigned_to',[])
             project = Project.objects.filter(pk=pk)
             
             for key,val in params.items():
@@ -63,7 +63,7 @@ class ProjectViewset(viewsets.ModelViewSet):
                     else :
                         return JsonResponse({'message': 'Project {} is not valid'.format(key)}, status=400)
                 
-                if key in ['start_date', 'end_date', 'assigned_on', 'completed_on']:
+                if key in ['start_date', 'end_date', 'completed_on']:
                     if val.strip():
                         kw[key] = datetime.strptime(val, '%d-%m-%Y')
                     else:
@@ -79,6 +79,7 @@ class ProjectViewset(viewsets.ModelViewSet):
                 for x in assigned_to:
                     project.assigned_to.add(Employee.objects.get(id=x))
                 project.assigned_by = request.user.employee
+                project.assigned_on = datetime.now()
                 project.save()
 
             return JsonResponse({"Message": 'Data Updated Successfully....', "data": ProjectSerializer(project).data}, status=200)
