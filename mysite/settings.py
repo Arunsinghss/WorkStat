@@ -25,8 +25,19 @@ SECRET_KEY = 'it3jvp-8ks6o_&2r4)qn^n9hwr+isz#!eqk3!@$g4eq6xeo&$b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*',
+    'db268065ab5c.ngrok.io',
+    'localhost'
+]
 
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [
+#     "https://db268065ab5c.ngrok.io",
+#     "http://localhost:8000",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8000"
+# ]
 
 # Application definition
 
@@ -39,14 +50,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'django_extensions',
     'employee',
-    'project'
+    'project',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,3 +144,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 }
+
+
+CORS_ALLOW_HEADERS = ['accept','accept-encoding','authorization','content-type','dnt','origin','user-agent','x-csrftoken','x-requested-with']
+
+CORS_ALLOW_METHODS = ('GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE',)
+CORS_EXPOSE_HEADERS = ('X-SessionID',)
+

@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate, login
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):
         params = request.data if request.data else request.POST
@@ -24,8 +24,9 @@ class UserViewset(viewsets.ModelViewSet):
             login(request, user)
             token,_ = Token.objects.get_or_create(user=user)
             empdata = EmployeeSerializer(user.employee).data
-            return JsonResponse({"message": "User Logged In Successfully...", "data":{'token': token.key, 'empdata':empdata}}, status=200)
-        return JsonResponse({"message": "Please Enter Valid Credentials..."}, status=200)
+            userdata = UserSerializer(user).data
+            return JsonResponse({"message": "User Logged In Successfully...", "data":{'token': token.key, 'empdata':empdata, 'userdata':userdata}}, status=200)
+        return JsonResponse({"message": "Please Enter Valid Credentials..."}, status=400)
 
 
 class EmployeeViewset(viewsets.ModelViewSet):
@@ -41,7 +42,12 @@ class EmployeeViewset(viewsets.ModelViewSet):
             'last_name': kwargs.get('last_name'),
             'email': kwargs.get('email'),
         }
-        user = User.objects.create(**userkwargs)
+        user = User.objects.filter(email=kwargs.get('email'))
+        if not user:
+            user = User.objects.create(**userkwargs)
+        else:
+            user.update(**userkwargs)
+            user = user.first()
         user.set_password(kwargs.get('password'))
         user.save()
         token,_ = Token.objects.get_or_create(user=user)
@@ -55,8 +61,8 @@ class EmployeeViewset(viewsets.ModelViewSet):
             'first_name':  params.get('first_name', ''),
             'last_name':  params.get('last_name', ''),
             'email':  params.get('email', ''),
-            'age':  params.get('age', ''),
-            'exp':  params.get('experience', ''),
+            'age':  params.get('emp_age', ''),
+            'exp':  params.get('emp_exp', ''),
             'designation':  params.get('designation', '')
         }
 
@@ -68,10 +74,10 @@ class EmployeeViewset(viewsets.ModelViewSet):
             designation = kwargs.get('designation')
             designation = EmployeeDesignation.objects.get(id=designation)
             user, token = self.create_user(kwargs)
-            emp = Employee.objects.create(user=user, designation=designation, emp_age=kwargs.get('age'), emp_exp=kwargs.get('experience'))
+            emp,_ = Employee.objects.get_or_create(user=user, designation=designation, emp_age=kwargs.get('age'), emp_exp=kwargs.get('experience'))
             empdata = self.serializer_class(emp).data
-            userdata = {'token': token, 'userdata': UserSerializer(user).data}
-            return JsonResponse({"message": "Employee Added Successfully...", "data": {'empdata': empdata.data, 'userdata': userdata}}, status=200)
+            userdata = UserSerializer(user).data
+            return JsonResponse({"message": "Employee Added Successfully...", "data": {'empdata': empdata, 'userdata': userdata}}, status=200)
         except Exception as e:
             return JsonResponse({"message": str(e)}, status=400)
 
