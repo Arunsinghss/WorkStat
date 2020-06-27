@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'username', 'email', 'groups')
 
     def get_groups(self, obj):
-        return obj.groups.all().values_list('name',flat=True)
+        return list(obj.groups.all().values_list('name',flat=True))
 
 class EmployeeDesignationSerializer(serializers.ModelSerializer):
     class Meta:
