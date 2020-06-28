@@ -77,7 +77,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
             designation = kwargs.get('designation')
             designation = EmployeeDesignation.objects.get(id=designation)
             user, token = self.create_user(kwargs)
-            emp,_ = Employee.objects.get_or_create(user=user, designation=designation, emp_age=kwargs.get('age'), emp_exp=kwargs.get('experience'))
+            emp,_ = Employee.objects.get_or_create(user=user, designation=designation, emp_age=kwargs.get('age'), emp_exp=kwargs.get('exp'))
             empdata = self.serializer_class(emp).data
             userdata = UserSerializer(user).data
             return JsonResponse({"message": "Employee Added Successfully...", "data": {'empdata': empdata, 'userdata': userdata}}, status=200)
